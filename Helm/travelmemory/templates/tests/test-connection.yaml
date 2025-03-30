@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "travelmemory.fullname" . }}-test-connection"
+  labels:
+    {{- include "travelmemory.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "travelmemory.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
